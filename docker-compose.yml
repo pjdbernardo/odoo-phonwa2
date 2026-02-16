@@ -1,0 +1,32 @@
+services:
+
+  db:
+    image: postgres:16                          # Versão recente e compatível com Odoo 19
+    container_name: odoo_postgres
+    # restart: always
+    environment:
+      POSTGRES_DB: postgres                     # Nome da base de dados padrão
+      POSTGRES_USER: odoo                       # Utilizador da BD
+      POSTGRES_PASSWORD: odoo1978               # Password – MUDAR para forte!
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data    # Guarda os dados da BD permanentemente
+
+  odoo:
+    image: odoo:19.0
+    container_name: odoo_app
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+     # - ./odoo/config/odoo.conf:/etc/odoo/odoo.conf   # Reavakiar necessidade
+    environment:
+      - HOST=db
+      - USER=odoo                               # Utilizador da BD (deve coincidir com POSTGRES_USER). Nota:  Essa nao estava  
+      - PASSWORD=odoo1978                       # Password da BD – MUDAR para uma forte no projeto real! Nota:  Essa nao estava
+      #  restart: always                        # Reavaliar necessidade
+
+volumes:                                           # Define os volumes persistentes (não perdem dados ao parar containers)
+  odoo-db-data:
+  odoo-web-data:
