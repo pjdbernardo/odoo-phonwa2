@@ -14,6 +14,7 @@ services:
   odoo:
     image: odoo:19.0
     container_name: odoo_app
+     # restart: always
     depends_on:
       - db
     ports:
@@ -25,7 +26,6 @@ services:
       - HOST=db
       - USER=odoo                               # Utilizador da BD (deve coincidir com POSTGRES_USER). Nota:  Essa nao estava  
       - PASSWORD=odoo1978                       # Password da BD – MUDAR para uma forte no projeto real! Nota:  Essa nao estava
-      #  restart: always                        # Reavaliar necessidade
 
 volumes:                                           # Define os volumes persistentes (não perdem dados ao parar containers)
   odoo-db-data:
